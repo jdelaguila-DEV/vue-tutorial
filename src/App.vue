@@ -1,17 +1,20 @@
 <template>
   <div class="container">
+    <!-- jumbotron -->
+    <Jumbutron title="Jumbutron" text="texto jumbutron" />
+
     <h1 class="py-3">App</h1>
     <ButtonCounter />
     <h1 class="py-3">Blog</h1>
-    <BlogPost title="Post 1" text="texto 1" colorText="info" backgroundColor="bg-info" />
+    <BlogPost title="Post 1" text="texto 1" colorText="danger" backgroundColor="bg-info" />
     <BlogPost title="Post 2" text="texto 2" colorText="success" backgroundColor="bg-light" />
     <BlogPost title="Post 3" text="texto 3" colorText="warning" backgroundColor="bg-danger" />
     <BlogPost title="Post 3" text="texto 3" colorText="dark" backgroundColor="bg-primary" />
 
     <!-- consuming the api -->
     <h1 class="py-3">Api</h1>
-    <div v-for="post in posts">
-      <BlogPost title="post.title" text="post.body" colorText="info" backgroundColor="bg-info" />
+    <div v-for="p in post" :key="p.id">
+      <BlogPost :title="p.title" :text="p.body" colorText="dark" backgroundColor="bg-light" />
     </div>
 
 
@@ -21,18 +24,22 @@
 <script setup lang="ts">
 import BlogPost from './components/BlogPost.vue';
 import ButtonCounter from './components/ButtonCounter.vue';
+import Jumbutron from './components/Jumbutron.vue';
+import axios from 'axios';
+import { ref } from 'vue';
 
-// function for consuming an api
+const post: any = ref([]);
 
-const Api = async () => {
-  const response = await fetch('https://jsonplaceholder.typicode.com/posts');
-  const data = await response.json();
-  console.log(data)
-  return data;
-};
+const getPost = async () => {
+  try {
+    const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
+    post.value = response.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-const posts = Api();
-
+getPost();
 
 </script>
 
