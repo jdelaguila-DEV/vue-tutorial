@@ -10,6 +10,10 @@ const counter = ref(0);
 
 const increment = () => counter.value++;
 
+defineProps<{
+  color: string;
+}>();
+
 </script>
 
 <style scoped></style>

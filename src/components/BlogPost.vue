@@ -1,9 +1,12 @@
 <template>
-    <div class="py-2">
-        <div class="card" :class="`text-${colorText} ${backgroundColor}`">
+    <div class="py-3">
+        <div class="card" :class="`text-${colorText} bg-${backgroundColor}`">
             <div class="card-body">
-                <h4 class="card-title">{{ title }}</h4>
-                <p class="card-text">{{ text }}</p>
+                <h4 class="card-title">{{ id }} - {{ title }}</h4>
+                <p class="card-text">{{ body }}</p>
+                <button @click="emit('changeFavoriteName', title)" class="btn btn-outline-danger">
+                    Favorite
+                </button>
             </div>
         </div>
     </div>
@@ -11,12 +14,18 @@
 
 <script setup lang="ts">
 
-defineProps<{
+const emit = defineEmits(["changeFavoriteName"])
+
+withDefaults(defineProps<{
+    id: number;
     title: string;
-    text: string;
-    colorText: string;
-    backgroundColor: string;
-}>();
+    body: string;
+    colorText?: string
+    backgroundColor?: string
+}>(), {
+    colorText: 'dark',
+    backgroundColor: 'light'
+});
 
 </script>
 
