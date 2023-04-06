@@ -16,7 +16,8 @@
     <BlogPost :id="1" title="Post 1" body="texto 1" colorText="success" @changeFavoriteName="changeFavorite" />
 
     <!-- pagination -->
-    <Pagination :next="next" :previus="previus" />
+    <!-- <Pagination :next="next" :previus="previus" /> -->
+    <Pagination @next="next" @previus="previus" />
 
     <!-- consuming the api -->
     <div v-for="p in posts.slice(init, limit)" :key="p.id">
@@ -28,12 +29,15 @@
 
 <script setup lang="ts">
 
+// components
 import BlogPost from './components/BlogPost.vue';
 import ButtonCounter from './components/ButtonCounter.vue';
 import Jumbutron from './components/Jumbutron.vue';
-import axios from 'axios';
-import { ref } from 'vue';
 import Pagination from './components/Pagination.vue';
+
+// packages
+// import axios from 'axios';
+import { ref } from 'vue';
 
 
 const posts: any = ref([]);
@@ -43,18 +47,26 @@ const limit = ref(qtyPage)
 
 
 
-// get the api with axios//
+// get api with axios//
 
-const getPost = async () => {
-  try {
-    const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
-    posts.value = response.data;
-  } catch (error) {
-    console.error(error);
-  }
-}
+// const getPost = async () => {
+//   try {
+//     const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
+//     posts.value = response.data;
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
 
-getPost();
+// getPost();
+
+// get api with fetch //
+
+fetch('https://jsonplaceholder.typicode.com/posts')
+  .then(response => response.json())
+  .then((data) => posts.value = data)
+
+
 
 //emit favorites posts //
 
@@ -72,8 +84,9 @@ const next = () => {
 }
 
 const previus = () => {
-  init.value = init.value - qtyPage;
-  limit.value = limit.value - qtyPage;
+  // init.value = init.value - qtyPage;
+  init.value += - qtyPage;
+  limit.value += - qtyPage;
 }
 
 
